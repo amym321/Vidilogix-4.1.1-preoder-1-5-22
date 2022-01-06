@@ -6478,26 +6478,52 @@ lazySizesConfig.expFactor = 4;
         var cartBtn = document.getElementById(this.selectors.addToCart);
         var cartBtnText = document.getElementById(this.selectors.addToCartText);
 
+        var variantInventoryObjectV = window.inventoriesV[variant.id];
+        var quantityX = variantInventoryObjectV.quantityV;
+        var policyX = variantInventoryObjectV.policyV;
+        // var quantityV = _variantsInventoryQuantity [variant.id];
+        // var policyV = _variantsInventoryPolicy [variant.id];
+
+        console.log("before loop");
+        console.log("quantityX", quantityX);
+        console.log("policyX", policyX);
+        // console.log("quantityV", quantityV);
+        // console.log("policyV", policyV);
+
         if (variant) {
+            console.log("passed 'if variant'");
           if (variant.available) {
-            // Available, enable the submit button and change text
-            cartBtn.classList.remove(classes.disabled);
-            cartBtn.disabled = false;
-            var defaultText = cartBtnText.dataset.defaultText;
-            cartBtnText.textContent = defaultText;
+              console.log("passed 'if available' and now add to cart");
+            if (quantityX > 0) {
+                console.log("passed 'quantity > 0' add to cart");
+                // Available, enable the submit button and change text
+                cartBtn.classList.remove(classes.disabled);
+                cartBtn.disabled = false;
+                // var defaultText = cartBtnText.dataset.defaultText;
+                // cartBtnText.textContent = defaultText;
+                cartBtnText.textContent = theme.strings.addToCartString;
+            } else if (policyX === 'continue' && quantityX <= 0) {
+                console.log("passed 'quantity <= 0, policy continue' preorder");
+                cartBtn.classList.remove(classes.disabled);
+                cartBtn.disabled = false;
+                cartBtnText.textContent = theme.strings.preorder;
+            } 
           } else {
-            // Sold out, disable the submit button and change text
-            cartBtn.classList.add(classes.disabled);
-            cartBtn.disabled = true;
-            cartBtnText.textContent = theme.strings.soldOut;
+              console.log("passed 'if available' and now sold out");
+              // Sold out, disable the submit button and change text
+              cartBtn.classList.add(classes.disabled);
+              cartBtn.disabled = true;
+              cartBtnText.textContent = theme.strings.soldOut;
           }
         } else {
-          // The variant doesn't exist, disable submit button
-          cartBtn.classList.add(classes.disabled);
-          cartBtn.disabled = true;
-          cartBtnText.textContent = theme.strings.unavailable;
+            // The variant doesn't exist, disable submit button
+            cartBtn.classList.add(classes.disabled);
+            cartBtn.disabled = true;
+            cartBtnText.textContent = theme.strings.unavailable;
         }
       },
+
+
 
       updatePrice: function(evt) {
         var variant = evt.detail.variant;

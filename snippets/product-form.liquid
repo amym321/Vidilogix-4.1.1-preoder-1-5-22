@@ -133,6 +133,7 @@
         endif
          
         if current_variant.inventory_policy == 'deny' and current_variant.inventory_quantity <= 0
+          assign default_text = 'products.product.sold_out' | t
           assign button_text = 'products.product.sold_out' | t
         endif
       -%}
@@ -166,3 +167,23 @@
     </textarea>
   {%- endif -%}
 {%- endform -%}
+
+<!-- <script>
+  window._variantsInventoryQuantity = {};
+  window._variantsInventoryPolicy = {};
+  {% for variant in product.variants %}
+    window._variantsInventoryQuantity[{{ variant.id }}] = {{ variant.inventory_quantity }};
+    window._variantsInventoryPolicy[{{ variant.id }}] = {{ variant.inventory_policy }}
+  {% endfor %}
+</script> -->
+
+<script>
+  window.inventoriesV = window.inventories || {};
+  {% for variant in product.variants %}
+    window.inventoriesV[{{ variant.id }}] = {
+      'quantityV': {{ variant.inventory_quantity | default: 0 }},
+      'policyV': {{ variant.inventory_policy | json }}
+    };
+  {% endfor %}
+</script>
+

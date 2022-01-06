@@ -117,3 +117,13 @@
     </textarea>
   {%- endif -%}
 {%- endform -%}
+
+<script>
+  window.inventoriesV = window.inventories || {};
+  {% for variant in product.variants %}
+    window.inventoriesV[{{ variant.id }}] = {
+      'quantityV': {{ variant.inventory_quantity | default: 0 }},
+      'policyV': {{ variant.inventory_policy | json }}
+    };
+  {% endfor %}
+</script>
