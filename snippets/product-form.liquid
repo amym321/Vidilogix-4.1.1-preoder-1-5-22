@@ -168,15 +168,6 @@
   {%- endif -%}
 {%- endform -%}
 
-<!-- <script>
-  window._variantsInventoryQuantity = {};
-  window._variantsInventoryPolicy = {};
-  {% for variant in product.variants %}
-    window._variantsInventoryQuantity[{{ variant.id }}] = {{ variant.inventory_quantity }};
-    window._variantsInventoryPolicy[{{ variant.id }}] = {{ variant.inventory_policy }}
-  {% endfor %}
-</script> -->
-
 <script>
   window.inventoriesV = window.inventories || {};
   {% for variant in product.variants %}
